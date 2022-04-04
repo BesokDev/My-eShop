@@ -72,6 +72,11 @@ class Produit
      */
     private $deletedAt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Commande::class, inversedBy="products")
+     */
+    private $commande;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -205,6 +210,18 @@ class Produit
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }
