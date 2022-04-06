@@ -91,20 +91,26 @@
                                 <tbody>
 
                                 {% for command in commands %}
+                                    {% set produit=command.products | first %}
                                     <tr>
                                         <td>{{ command.id }}</td>
                                         <td>{{ command.user.id }} - {{ command.user.fullname }} - {{ command.user.email }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{ produit.id }} - {{ produit.title }}</td>
+                                        <td>{{ command.quantity }}</td>
+                                        <td>{{ command.total }}</td>
+                                        <td>{{ command.state }}</td>
+                                        <td>{{ command.createdAt | date('d/m/Y') }} - {{ command.createdAt | date('H:i') }}</td>
+                                        <td>
+                                            <a href="" title="Annuler la commande" class="btn btn-sm btn-danger"><i class="fa-solid fa-times"></i></a>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="8" class="text-center bg-warning">Aucune commande en cours</td>
                                     </tr>
                                 {% endfor %}
 
                                 </tbody>
-                                
                             </table>
                             
                         </div>

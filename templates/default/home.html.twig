@@ -6,4 +6,23 @@
 
     <h1 class="text-center my-3">Bienvenue sur la boutique en ligne</h1>
 
+    <div class="row mb-3">
+
+    {% for produit in produits %}
+        <div class="col-3 mx-2">
+            <div class="card" style="width: 18rem;">
+                <img src="#" class="card-img-top" alt="une photo" style="object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Titre</h5>
+                    <p class="card-text">Description</p>
+                    <a href="#" class="btn btn-primary mx-auto text-center">Ajouter au panier</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h3 class="text-center text-white">La boutique est vide</h3>
+    {% endfor %}
+
+    </div>
+
 {% endblock %}
