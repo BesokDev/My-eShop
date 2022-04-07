@@ -46,13 +46,18 @@
                 <td>{{ command.state }}</td>
                 <td>{{ command.createdAt | date('d/m/Y') }} - {{ command.createdAt | date('H:i') }}</td>
                 <td>
-                    <a href="#" title="Voir la commande" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a> |
-                    <a href="{{ path('soft_delete_commande', {'id': command.id}) }}" title="Annuler la commande" class="btn btn-sm btn-danger"><i class="fa-solid fa-ban"></i></a>
+                    <a href="{{ path('restore_commande', {'id': command.id}) }}" title="Restaurer la commande" class="btn btn-sm btn-primary"><i class="fa-solid fa-arrow-rotate-left"></i></a> |
+                    <a href="{{ path('hard_delete_commande', {'id': command.id}) }}"
+                       title="Supprimer définitivement la commande"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Cette action va supprimer définitivement la commande de la base de données. Continuer ?')">
+                        <i class="fa-solid fa-times"></i>
+                    </a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8" class="text-center bg-warning">Toutes les commandes ont été honorées</td>
+                <td colspan="8" class="text-center bg-warning">Aucune commande annulée</td>
             </tr>
         {% endfor %}
 
