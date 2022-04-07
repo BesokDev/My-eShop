@@ -26,7 +26,7 @@ class ProduitController extends AbstractController
     public function showProduit(ProduitRepository $produitRepository): Response
     {
         return $this->render("admin/show_produit.html.twig", [
-            'produits' => $produitRepository->findAll(),
+            'produits' => $produitRepository->findBy(['deletedAt' => null]),
         ]);
     }
 
@@ -50,23 +50,9 @@ class ProduitController extends AbstractController
             $photo = $form->get('photo')->getData();
 
             if($photo) {
-
-                # guessExtension() devine l'extension du fichier À PARTIR du MimeType du fichier
-                    #   => rappel : NE PAS confondre extension ET MimeType !
-                $extension = '.' . $photo->guessExtension();
-                $safeFilename = $slugger->slug($produit->getTitle());
-
-                $newFilename = $safeFilename . '_' . uniqid() . $extension;
-
-                try {
-                    $photo->move($this->getParameter('uploads_dir'), $newFilename);
-                    $produit->setPhoto($newFilename);
-                } catch (FileException $exception) {
-                    $this->addFlash('warning', 'La photo du produit ne s\'est pas importée avec succès. Veuillez réessayer en modifiant le produit.');
-//                    return $this->redirectToRoute('show_produit');
-                } // end catch()
-
-            } // end if($photo)
+                // Méthode créée par nous-même pour réutiliser cette partie de code
+                $this->handleFile($produit, $photo, $slugger);
+            }
 
             $entityManager->persist($produit);
             $entityManager->flush();
@@ -98,6 +84,7 @@ class ProduitController extends AbstractController
             $photo = $form->get('photo')->getData();
 
             if($photo) {
+                // Méthode créée par nous-même pour réutiliser cette partie de code
                 $this->handleFile($produit, $photo, $slugger);
             }
             else {
@@ -121,9 +108,18 @@ class ProduitController extends AbstractController
 
     ///////////////////////////////////////////////////////////////// PRIVATE FUNCTION /////////////////////////////////////////////////////////////
 
-    private function handleFile(Produit $produit, UploadedFile $photo, SluggerInterface $slugger)
+    /**
+     * @param Produit $produit
+     * @param UploadedFile $photo
+     * @param SluggerInterface $slugger
+     * @return void
+     */
+    private function handleFile(Produit $produit, UploadedFile $photo, SluggerInterface $slugger): void
     {
+        # guessExtension() devine l'extension du fichier À PARTIR du MimeType du fichier
+        #   => rappel : NE PAS confondre extension ET MimeType !
         $extension = '.' . $photo->guessExtension();
+
         $safeFilename = $slugger->slug($produit->getTitle());
 
         $newFilename = $safeFilename . '_' . uniqid() . $extension;
@@ -133,12 +129,44 @@ class ProduitController extends AbstractController
             $produit->setPhoto($newFilename);
         } catch (FileException $exception) {
             $this->addFlash('warning', 'La photo du produit ne s\'est pas importée avec succès. Veuillez réessayer en modifiant le produit.');
-//                    return $this->redirectToRoute('show_produit');
         } // end catch()
-
-//        return $produit;
     }
 
+    /**
+     * @Route("/archiver-un-produit/{id}", name="soft_delete_produit", methods={"GET"})
+     * @param Produit $produit
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function softDeleteProduit(Produit $produit, EntityManagerInterface $entityManager): Response
+    {
+        // setDeletedAt() nous permet de créer une bascule (on/off) sur le produit pour afficher en ligne ou le mettre dans la poubelle.
+            # CEPENDANT ! En BDD la ligne existe toujours, l'objet Produit n'est pas supprimé.
+        $produit->setDeletedAt(new DateTime());
 
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        $this->addFlash('success', "Le produit " . $produit->getTitle() ." a bien été archivé.");
+        return $this->redirectToRoute('show_produit');
+    }
+
+    /**
+     * @Route("/restaurer-un-produit/{id}", name="restore_produit", methods={"GET"})
+     * @param Produit $produit
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function restoreProduit(Produit $produit, EntityManagerInterface $entityManager): Response
+    {
+        // côté miroir de la bascule (on/off) qui permet de restaurer en ligne le Produit.
+        $produit->setDeletedAt(null);
+
+        $entityManager->persist($produit);
+        $entityManager->flush();
+
+        $this->addFlash('success', "Le produit " . $produit->getTitle() ." a bien été restauré.");
+        return $this->redirectToRoute('show_produit');
+    }
 
 }
