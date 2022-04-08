@@ -15,7 +15,7 @@ class DefaultController extends AbstractController
      */
     public function home(ProduitRepository $produitRepository): Response
     {
-        $produits = $produitRepository->findBy(['deletedAt' => null]);
+        $produits = $produitRepository->findBy(['deletedAt' => null, 'commande' => null]);
 
         return $this->render('default/home.html.twig', [
             'produits' => $produits

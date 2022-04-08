@@ -8,6 +8,12 @@
 
     <div class="row mb-3 d-flex justify-content-around">
 
+        <div class="row">
+            <div class="col-10 mx-auto">
+                {% include 'include/_flashes.html.twig' %}
+            </div>
+        </div>
+
     {% for produit in produits %}
         <div class="col-3 mx-2">
             <div class="card" style="width: 18rem;">
@@ -15,7 +21,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ produit.title }}</h5>
                     <p class="card-text">{{ produit.description | length > 31 ? produit.description | slice(0,31) ~ '...' : produit.description }}</p>
-                    <a href="#" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a>
+                    <a href="{{ path('panier_add', {'id': produit.id}) }}" class="col-12 btn btn-warning text-center"><i class="fa-solid fa-cart-plus"></i></a>
                 </div>
             </div>
         </div>
