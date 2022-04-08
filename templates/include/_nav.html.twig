@@ -1,0 +1,66 @@
+<header>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('default_home') }}">My e-Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ path('default_home') }}">Accueil</a>
+                    </li>
+
+                    {% if not app.user %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('security_register') }}">Inscription</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                        </li>
+
+                    {% else %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('show_account') }}">Mon compte</a>
+                        </li>
+
+                        {% if is_granted("ROLE_ADMIN") %}
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Espace Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ path('show_dashboard') }}">Dashboard</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path('show_produit') }}">Gestion Produits</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('show_commandes') }}">Gestion Commandes</a></li>
+                                    <li><a class="dropdown-item" href="#">Gestion Membre</a></li>
+                                </ul>
+                            </li>
+
+                        {% endif %} {# is_granted() #}
+                    {% endif %} {# not app.user #}
+
+                </ul>
+
+                <div class="me-5">
+                    <a href="{{ path('show_panier') }}" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i> Panier</a>
+                </div>
+
+{#                <form class="d-flex">#}
+{#                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
+{#                    <button class="btn btn-outline-success" type="submit">Search</button>#}
+{#                </form>#}
+            </div>
+        </div>
+    </nav>
+
+</header>

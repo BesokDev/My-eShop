@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin | Ajouter un produit{% endblock %}
+
+{% block body %}
+
+    {% if produit is defined %}
+        <h1 class="text-center my-3">Modifier le produit {{ produit.title }}</h1>
+    {% else %}
+        <h1 class="text-center my-3">Ajouter un produit</h1>
+    {% endif %}
+
+    <a href="{{ path('show_produit') }}" class="text-dark"><i class="fa-solid fa-arrow-left"></i> Retour aux produits</a>
+
+    <div class="row">
+        <div class="col-8 mx-auto">
+            {{ form_start(form) }}
+
+            <div class="row">
+                <div class="col-12">{{ form_row(form.title) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">{{ form_row(form.description) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">{{ form_row(form.color) }}</div>
+                <div class="col-4">{{ form_row(form.size) }}</div>
+                <div class="col-4">{{ form_row(form.collection) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">{{ form_row(form.price) }}</div>
+                <div class="col-6">{{ form_row(form.stock) }}</div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">{{ form_row(form.photo) }}</div>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
