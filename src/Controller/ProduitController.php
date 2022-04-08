@@ -26,7 +26,7 @@ class ProduitController extends AbstractController
     public function showProduit(ProduitRepository $produitRepository): Response
     {
         return $this->render("admin/show_produit.html.twig", [
-            'produits' => $produitRepository->findBy(['deletedAt' => null]),
+            'produits' => $produitRepository->findBy(['deletedAt' => null, 'commande' => null]),
         ]);
     }
 

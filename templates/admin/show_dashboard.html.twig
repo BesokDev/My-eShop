@@ -10,10 +10,11 @@
         <div class="col-12 text-center my-5">
 
             <a href="{{ path('show_produit') }}" class="btn btn-outline-primary col-3">Gestion Produit</a>
-            <a href="" class="btn btn-outline-primary col-3">Gestion Commandes</a>
+            <a href="{{ path('show_commandes') }}" class="btn btn-outline-primary col-3">Gestion Commandes</a>
             <a href="" class="btn btn-outline-primary col-3">Gestion Membres</a>
 
         </div>
     </div>
 
+{#  TODO: faire stats sur chaque entité  #}
 {% endblock %}

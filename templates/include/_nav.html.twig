@@ -41,7 +41,7 @@
                                     <li><a class="dropdown-item" href="{{ path('show_dashboard') }}">Dashboard</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li><a class="dropdown-item" href="{{ path('show_produit') }}">Gestion Produits</a></li>
-                                    <li><a class="dropdown-item" href="#">Gestion Commandes</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('show_commandes') }}">Gestion Commandes</a></li>
                                     <li><a class="dropdown-item" href="#">Gestion Membre</a></li>
                                 </ul>
                             </li>
@@ -49,10 +49,12 @@
                         {% endif %} {# is_granted() #}
                     {% endif %} {# not app.user #}
 
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link disabled">Disabled</a>#}
-{#                    </li>#}
                 </ul>
+
+                <div class="me-5">
+                    <a href="{{ path('show_panier') }}" class="btn btn-warning"><i class="fa-solid fa-cart-arrow-down"></i> Panier</a>
+                </div>
+
 {#                <form class="d-flex">#}
 {#                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
 {#                    <button class="btn btn-outline-success" type="submit">Search</button>#}
