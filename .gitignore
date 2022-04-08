@@ -14,7 +14,8 @@
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build/
+# On commente cette ligne pour permettre au serveur en prod d'accéder aux ressources.
+#/public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
